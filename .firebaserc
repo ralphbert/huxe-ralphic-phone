@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "huxe21": {
+      "hosting": {
+        "final-game": [
+          "huxe21"
+        ]
+      }
+    }
+  }
+}

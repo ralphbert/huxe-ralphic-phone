@@ -1,0 +1,22 @@
+<div>playerId: {{ playerId$ | async }}</div>
+<div>gameId: {{ gameId$ | async }}</div>
+<div>mode$: {{ mode$ | async }}</div>
+<hr>
+
+<ng-container *ngIf="gameExistence$ | async as gameExistence">
+  <ng-container [ngSwitch]="gameExistence">
+    <ng-container *ngSwitchCase="'loading'">Loading ...</ng-container>
+    <ng-container *ngSwitchCase="'not-existing'">
+      <h1>Game does not exist! Go away please.</h1>
+
+      <a routerLink="/">Go home</a>
+    </ng-container>
+    <ng-container *ngSwitchCase="'existing'">
+      Game exists!
+
+      <button *appIfHost (click)="endGame()">End game</button>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<router-outlet></router-outlet>
