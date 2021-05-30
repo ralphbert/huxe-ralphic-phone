@@ -3,6 +3,7 @@ import {JoinGame} from '../../../../store/game.actions';
 import {Store} from '@ngxs/store';
 import {switchMap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {GameState} from '../../../../store/game.state';
 
 @Component({
   selector: 'app-join',
@@ -21,7 +22,7 @@ export class JoinComponent implements OnInit {
 
   onJoin(gameId: string): void {
     this.loading = false;
-    this.store.dispatch(new JoinGame(gameId))
+    this.store.dispatch(new JoinGame(this.store.selectSnapshot(GameState.playerId), gameId))
       .pipe(
         switchMap(() => {
           return this.router.navigate(['/', gameId, 'lobby']);

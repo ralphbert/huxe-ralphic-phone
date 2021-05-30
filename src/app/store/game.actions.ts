@@ -1,4 +1,4 @@
-import {GameData, GameId} from '../modules/core/typings';
+import {GameData, GameId, Player, PlayerId, PlayerSettings} from '../modules/core/typings';
 import firebase from 'firebase';
 
 const prefix = '[Game]';
@@ -14,34 +14,43 @@ export class EndGame {
 export class JoinGame {
   static readonly type = `${prefix} JoinGame`;
 
-  constructor(public code: string) {
+  constructor(public playerId: PlayerId, public gameId: GameId) {
   }
 }
 
-export class SetPlayerName {
-  static readonly type = `${prefix} SetPlayerName`;
+export class CustomizePlayer {
+  static readonly type = `${prefix} CustomizePlayer`;
 
-  constructor(public name: string) {
+  constructor(public playerSettings: PlayerSettings) {
   }
 }
 
 export class SetGameData {
   static readonly type = `${prefix} SetGameData`;
 
-  constructor(public gameData: GameData | null) {}
+  constructor(public gameData: GameData | null) {
+  }
 }
 
+export class SetPlayersData {
+  static readonly type = `${prefix} SetPlayersData`;
+
+  constructor(public player: Player[] | null) {
+  }
+}
 
 export class SetUser {
   static readonly type = `${prefix} SetUser`;
 
-  constructor(public user: firebase.User | null) {}
+  constructor(public user: firebase.User | null) {
+  }
 }
 
 
 export class SetGameId {
   static readonly type = `${prefix} SetGameId`;
 
-  constructor(public gameId: GameId) {}
+  constructor(public gameId: GameId) {
+  }
 }
 

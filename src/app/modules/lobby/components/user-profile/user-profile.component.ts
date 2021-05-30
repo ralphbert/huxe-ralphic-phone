@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {Player, PlayerId} from '../../../core/typings';
+import {Select} from '@ngxs/store';
+import {GameState} from '../../../../store/game.state';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserProfileComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class UserProfileComponent {
+  @Select(GameState.playerId) playerId$: Observable<PlayerId>;
+  @Input() player: Player;
 }

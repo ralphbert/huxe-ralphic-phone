@@ -1,12 +1,29 @@
-<p>lobby works!</p>
+<app-page>
+  <h2>Lobby</h2>
 
-<div class="flex">
-  <div class="w-1/3">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div>
-      <input class="border px-2 py-3" (input)="onValueChange(username.value)" #username>
-    </div>
-  </div>
-  <div class="w-2/3">
+      <div>
+        <div class="form-group">
+          <label for="player-name">Player name:</label>
+          <input id="player-name" class="form-control" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label for="player-image">Avatar:</label>
+          <app-image-picker id="player-image" formControlName="image"></app-image-picker>
+        </div>
 
-  </div>
-</div>
+        <button type="submit">Save & ready!</button>
+      </div>
+      <div>
+        <div *ngFor="let player of players$ | async; trackBy: trackById">
+          <app-user-profile [player]="player"></app-user-profile>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <button *appIfHost [disabled]="!(allReady$ | async)">Start game!</button>
+
+  <pre>{{ players$ | async | json }}</pre>
+</app-page>

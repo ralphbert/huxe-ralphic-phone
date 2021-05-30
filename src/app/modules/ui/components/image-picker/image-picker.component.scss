@@ -1,0 +1,15 @@
+label {
+  @apply w-16 rounded-full border-4 border-transparent inline-block;
+}
+
+input {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+input:checked + label {
+  @apply bg-primary overflow-hidden border-4;
+}
+

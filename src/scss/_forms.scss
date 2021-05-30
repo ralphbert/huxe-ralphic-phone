@@ -1,11 +1,11 @@
 .form-control {
-  @apply rounded border py-0.5 px-2 block;
+  @apply rounded border py-1 px-2 block;
 }
 
 .form-group {
   @apply block mb-3;
 
   label {
-    @apply block mb-2;
+    @apply block mb-2 text-gray-700
   }
 }

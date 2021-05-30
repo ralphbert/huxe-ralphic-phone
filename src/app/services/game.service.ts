@@ -2,9 +2,12 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {from, Observable, of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import firebase from 'firebase';
-import {GameData, GameId, GameMode, PlayerId} from '../modules/core/typings';
+import {GameData, GameId, Player, PlayerId, PlayerSettings} from '../modules/core/typings';
 import {AngularFirestoreDocument} from '@angular/fire/firestore/document/document';
+
+function randomAvatarNumber(): number {
+  return Math.ceil(Math.random() * 9);
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,7 @@ export class GameService {
   }
 
   hostGame(playerId: PlayerId): Observable<GameId> {
-    const operation = this.firestore.collection<GameData>('games').add({
+    const operation = this.firestore.collection<Partial<GameData>>('games').add({
       created: new Date(),
       stage: 'lobby',
       hostPlayerId: playerId,
@@ -22,7 +25,22 @@ export class GameService {
 
     return from(operation).pipe(
       map(ref => ref.id),
+      switchMap((id: string) => {
+        return this.joinGame(id, playerId).pipe(map(() => id));
+      }),
     );
+  }
+
+  joinGame(gameId: GameId, playerId: PlayerId): Observable<void> {
+    return from(this.firestore
+      .collection('games')
+      .doc(gameId)
+      .collection<PlayerSettings>('players')
+      .doc(playerId)
+      .set({
+        name: '',
+        avatar: 'avatar-' + randomAvatarNumber(),
+      }));
   }
 
   getGameDoc(gameId: GameId): Observable<AngularFirestoreDocument<GameData>> {
@@ -49,24 +67,11 @@ export class GameService {
     return of(false);
   }
 
-  registerPlayer(gameId: GameId, type: GameMode): Observable<string> {
-    const operation = this.firestore.collection('games').doc(gameId).collection('players').add({
-      type,
-    });
-
-    return from(operation).pipe(map(ref => ref.id));
-  }
-
-  onPlayerChanges(gameId: GameId): Observable<firebase.firestore.DocumentData[]> {
-    if (!gameId) {
-      throw Error('no game id given');
-    }
-    return this.firestore.collection('games').doc(gameId).collection('players').valueChanges();
-  }
-
-  setUsername(gameId: GameId, playerId: string, username: string): Observable<void> {
-    return from(this.firestore.collection('games').doc(gameId).collection('players').doc(playerId).set({
-      name: username,
+  customizePlayer(gameId: GameId, playerId: PlayerId, options: PlayerSettings): Observable<void> {
+    return from(this.firestore.collection('games').doc(gameId).collection<Partial<Player>>('players').doc(playerId).set({
+      name: options.name,
+      avatar: options.avatar,
+      ready: options.ready || false,
     }, {merge: true}));
   }
 }

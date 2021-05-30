@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import {LobbyRoutingModule} from './lobby-routing.module';
 import { LobbyComponent } from './pages/lobby/lobby.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import {UiModule} from '../ui/ui.module';
+import {ReactiveFormsModule} from '@angular/forms';
+import {CoreModule} from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +14,10 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
   ],
   imports: [
     LobbyRoutingModule,
-    CommonModule
+    CommonModule,
+    UiModule,
+    CoreModule,
+    ReactiveFormsModule
   ]
 })
 export class LobbyModule { }

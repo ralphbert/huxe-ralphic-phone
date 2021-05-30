@@ -1,1 +1,9 @@
-<p>user-profile works!</p>
+<div class="flex items-center" *ngIf="player">
+  <div class="w-8">
+    <img [src]="'assets/' + this.player.avatar + '.svg'">
+  </div>
+  <div>
+    {{ player.name }} <span *ngIf="(playerId$ | async) === player.id">(that's you)</span>
+    <div *ngIf="player.ready">READY!</div>
+  </div>
+</div>
