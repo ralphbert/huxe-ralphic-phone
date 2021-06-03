@@ -11,6 +11,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from './modules/core/core.module';
 import {AppStoreModule} from './app-store.module';
 import {AuthModule} from './modules/auth/auth.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import {AuthModule} from './modules/auth/auth.module';
     LandingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

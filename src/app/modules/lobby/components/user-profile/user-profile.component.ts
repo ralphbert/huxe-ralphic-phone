@@ -13,4 +13,12 @@ import {Observable} from 'rxjs';
 export class UserProfileComponent {
   @Select(GameState.playerId) playerId$: Observable<PlayerId>;
   @Input() player: Player;
+
+  get isReady(): boolean {
+    if (this.player) {
+      return !!this.player.avatar && !!this.player.name;
+    }
+
+    return false;
+  }
 }

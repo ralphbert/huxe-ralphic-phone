@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CustomizePlayer} from '../../../../store/game.actions';
+import {CustomizePlayer, StartGame} from '../../../../store/game.actions';
 import {Observable} from 'rxjs';
-import {Player, PlayerId} from '../../../core/typings';
+import {GameMode, Player, PlayerId} from '../../../core/typings';
 import {GameState} from '../../../../store/game.state';
 import {filter, take} from 'rxjs/operators';
 
@@ -17,6 +17,7 @@ import {filter, take} from 'rxjs/operators';
 export class LobbyComponent implements OnInit {
   @Select(GameState.players) players$: Observable<Player[]>;
   @Select(GameState.player) player$: Observable<Player>;
+  @Select(GameState.mode) mode$: Observable<GameMode>;
   @Select(GameState.allReady) allReady$: Observable<boolean>;
   formGroup: FormGroup;
 
@@ -41,16 +42,19 @@ export class LobbyComponent implements OnInit {
 
   onSubmit(): void {
     if (this.formGroup.valid) {
-      const { name, image } = this.formGroup.value;
+      const {name, image} = this.formGroup.value;
       this.store.dispatch(new CustomizePlayer({
         avatar: image,
         name,
-        ready: true,
       }));
     }
   }
 
   trackById(_: number, player: Player): PlayerId {
     return player.id;
+  }
+
+  startGame(): void {
+    this.store.dispatch(new StartGame());
   }
 }

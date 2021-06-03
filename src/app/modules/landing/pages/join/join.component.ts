@@ -1,33 +1,47 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {JoinGame} from '../../../../store/game.actions';
 import {Store} from '@ngxs/store';
-import {switchMap} from 'rxjs/operators';
-import {Router} from '@angular/router';
-import {GameState} from '../../../../store/game.state';
+import {catchError, switchMap, tap} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-join',
   templateUrl: './join.component.html',
-  styleUrls: ['./join.component.scss']
+  styleUrls: ['./join.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JoinComponent implements OnInit {
   loading = false;
   error: Error;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private store: Store, private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-  }
-
-  onJoin(gameId: string): void {
-    this.loading = false;
-    this.store.dispatch(new JoinGame(this.store.selectSnapshot(GameState.playerId), gameId))
+    this.activatedRoute.paramMap
       .pipe(
-        switchMap(() => {
-          return this.router.navigate(['/', gameId, 'lobby']);
+        tap(() => {
+          this.loading = true;
+          this.error = null;
+          this.changeDetectorRef.markForCheck();
+        }),
+        switchMap(params => {
+          const gameId = params.get('gameId');
+          return this.store.dispatch(new JoinGame(gameId)).pipe(
+            switchMap(() => {
+              return this.router.navigate(['/', gameId, 'lobby']);
+            }),
+            catchError(error => {
+              this.error = error;
+              return of(null);
+            }),
+          );
         }),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.loading = false;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 }

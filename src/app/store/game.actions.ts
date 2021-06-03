@@ -14,7 +14,7 @@ export class EndGame {
 export class JoinGame {
   static readonly type = `${prefix} JoinGame`;
 
-  constructor(public playerId: PlayerId, public gameId: GameId) {
+  constructor(public gameId: GameId) {
   }
 }
 
@@ -28,7 +28,7 @@ export class CustomizePlayer {
 export class SetGameData {
   static readonly type = `${prefix} SetGameData`;
 
-  constructor(public gameData: GameData | null) {
+  constructor(public gameData: Partial<GameData> | null) {
   }
 }
 
@@ -52,5 +52,13 @@ export class SetGameId {
 
   constructor(public gameId: GameId) {
   }
+}
+
+export class StartGame {
+  static readonly type = `${prefix} StartGame`;
+}
+
+export class LeaveGame {
+  static readonly type = `${prefix} LeaveGame`;
 }
 

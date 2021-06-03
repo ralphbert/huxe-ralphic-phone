@@ -4,6 +4,7 @@
   </div>
   <div>
     {{ player.name }} <span *ngIf="(playerId$ | async) === player.id">(that's you)</span>
-    <div *ngIf="player.ready">READY!</div>
+    <div *ngIf="isReady">READY!</div>
+    <div *ngIf="!isReady">NOT READY YET!</div>
   </div>
 </div>

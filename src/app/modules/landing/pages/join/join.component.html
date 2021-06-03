@@ -1,9 +1,5 @@
-<form (ngSubmit)="onJoin(code.value)">
-  <div class="form-group">
-    <label for="join-code"></label>
-    <input class="form-control" id="join-code" #code>
-  </div>
-
-  <button class="btn" type="submit">Join</button>
-</form>
-
+<p *ngIf="loading">Joining game...</p>
+<div *ngIf="error">
+  <p>{{ error.message }}</p>
+  <p><a routerLink="/">Go home</a></p>
+</div>

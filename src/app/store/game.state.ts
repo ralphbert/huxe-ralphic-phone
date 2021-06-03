@@ -1,8 +1,19 @@
 import {Action, NgxsOnInit, Selector, State, StateContext, Store} from '@ngxs/store';
-import {CustomizePlayer, EndGame, HostGame, JoinGame, SetGameData, SetGameId, SetPlayersData, SetUser} from './game.actions';
-import {forkJoin, merge, Observable, of} from 'rxjs';
+import {
+  CustomizePlayer,
+  EndGame,
+  HostGame,
+  JoinGame,
+  LeaveGame,
+  SetGameData,
+  SetGameId,
+  SetPlayersData,
+  SetUser,
+  StartGame
+} from './game.actions';
+import {combineLatest, Observable, of} from 'rxjs';
 import {GameService} from '../services/game.service';
-import {distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
+import {distinctUntilChanged, map, switchMap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {GameData, GameExistence, GameId, GameMode, GameStage, Player, PlayerId} from '../modules/core/typings';
 import firebase from 'firebase';
@@ -107,7 +118,7 @@ export class GameState implements NgxsOnInit {
 
   @Selector([GameState.players])
   static allReady(state: GameStateModel, players: Player[]): boolean {
-    return players.every(p => p.ready);
+    return players.every(p => (p.name != null) && (p.avatar != null));
   }
 
   ngxsOnInit(context: StateContext<GameStateModel>): any {
@@ -121,25 +132,27 @@ export class GameState implements NgxsOnInit {
           gameDataLoading: true,
         });
 
-        console.log('Game id changed', gameId);
+        console.log('%cGame id changed', 'color: purple; font-weight: bold;', gameId);
         if (gameId) {
           return this.gameService.getGameDoc(gameId).pipe(
             switchMap(doc => {
-              const gameDataObservable$ = doc.valueChanges({ idField: 'id' }).pipe(
+              const gameDataObservable$ = doc.valueChanges().pipe(
                 map(data => data || null),
                 switchMap((gameData) => {
+                  console.log('%cgameData', 'color: red; font-weight: bold;', gameData);
                   return context.dispatch(new SetGameData(gameData));
                 }),
               );
 
-              const playersObservable$ = doc.collection<Player>('players').valueChanges({ idField: 'id' }).pipe(
+              const playersObservable$ = doc.collection<Player>('players').valueChanges({idField: 'id'}).pipe(
                 map(data => data || null),
                 switchMap((playerData) => {
+                  console.log('%cplayerData', 'color: orange; font-weight: bold;', playerData);
                   return context.dispatch(new SetPlayersData(playerData));
                 }),
               );
 
-              return forkJoin([playersObservable$, gameDataObservable$]);
+              return combineLatest([playersObservable$, gameDataObservable$]);
             }),
           );
         } else {
@@ -173,7 +186,8 @@ export class GameState implements NgxsOnInit {
 
   @Action(JoinGame)
   joinGame(context: StateContext<GameStateModel>, action: JoinGame): Observable<void> {
-    return this.gameService.joinGame(action.playerId, action.gameId);
+    const playerId = this.store.selectSnapshot(GameState.playerId);
+    return this.gameService.joinGame(action.gameId, playerId);
   }
 
   @Action(CustomizePlayer, {cancelUncompleted: true})
@@ -182,7 +196,10 @@ export class GameState implements NgxsOnInit {
     const playerId = this.store.selectSnapshot(GameState.playerId);
 
     if (state.gameId != null && playerId != null) {
-      return this.gameService.customizePlayer(state.gameId, playerId, action.playerSettings);
+      return this.gameService.customizePlayer(state.gameId, playerId, {
+        ...(this.store.selectSnapshot(GameState.player) || {}),
+        ...action.playerSettings,
+      });
     }
 
     return of(null);
@@ -205,7 +222,7 @@ export class GameState implements NgxsOnInit {
   setGameData(context: StateContext<GameStateModel>, action: SetGameData): void {
     context.patchState({
       gameDataLoading: false,
-      gameData: action.gameData,
+      gameData: action.gameData as GameData,
     });
   }
 
@@ -224,6 +241,23 @@ export class GameState implements NgxsOnInit {
         gameId: action.gameId,
         gameData: null,
       });
+    }
+  }
+
+  @Action(StartGame)
+  startGame(context: StateContext<GameStateModel>): Observable<any> {
+    return this.gameService.startGame(context.getState().gameId);
+  }
+
+  @Action(LeaveGame)
+  leaveGame(context: StateContext<GameStateModel>): Observable<any> {
+    const state = context.getState();
+    const mode = this.store.selectSnapshot(GameState.mode);
+
+    if (mode === 'host') {
+      return context.dispatch(new EndGame());
+    } else {
+      return this.gameService.leaveGame(state.gameId, this.store.selectSnapshot(GameState.playerId));
     }
   }
 }

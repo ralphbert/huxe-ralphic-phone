@@ -1,5 +1,5 @@
 <div class="">
-  <ng-container *ngFor="let image of images">
+  <div class="inline-block transition-transform" *ngFor="let image of images" [class.active]="value === image">
     <input
       [id]="image"
       type="radio"
@@ -8,7 +8,7 @@
       [checked]="value === image"
       (change)="$event.preventDefault(); onSelect(image)">
     <label [attr.for]="image">
-      <img class="inline-block w-16 h-auto" [class.active]="value === image" [src]="'assets/' + image + '.svg'">
+      <img class="inline-block w-16 h-auto" [src]="'assets/' + image + '.svg'">
     </label>
-  </ng-container>
+  </div>
 </div>

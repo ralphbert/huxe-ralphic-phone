@@ -1,19 +1,23 @@
 <app-page>
   <h2>Lobby</h2>
 
+  <a routerLink="/">Leave</a>
+
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div>
       <div>
         <div class="form-group">
           <label for="player-name">Player name:</label>
           <input id="player-name" class="form-control" formControlName="name">
+          <div *ngIf="formGroup.get('name').errors?.required">Required!</div>
         </div>
         <div class="form-group">
           <label for="player-image">Avatar:</label>
           <app-image-picker id="player-image" formControlName="image"></app-image-picker>
+          <div *ngIf="formGroup.get('image').errors?.required">Required!</div>
         </div>
 
-        <button type="submit">Save & ready!</button>
+        <button type="submit" [disabled]="formGroup.invalid">Save</button>
       </div>
       <div>
         <div *ngFor="let player of players$ | async; trackBy: trackById">
@@ -23,7 +27,7 @@
     </div>
   </form>
 
-  <button *appIfHost [disabled]="!(allReady$ | async)">Start game!</button>
+  <button *appIfHost [disabled]="!(allReady$ | async)" (click)="startGame()">Start game!</button>
 
   <pre>{{ players$ | async | json }}</pre>
 </app-page>

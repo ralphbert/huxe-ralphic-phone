@@ -5,8 +5,10 @@ import {GameService} from '../../../../services/game.service';
 import {map, switchMap} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {EndGame, SetGameId} from '../../../../store/game.actions';
+import {EndGame, LeaveGame, SetGameId} from '../../../../store/game.actions';
 import {GameExistence, GameId, GameMode, PlayerId} from '../../typings';
+import {CanDeactivateResponder, TypeOrObservable} from '../../../../lib/can-deactivate.interface';
+import {ConfirmDialogData} from '../../../dialogs/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-game-wrapper',
@@ -14,7 +16,7 @@ import {GameExistence, GameId, GameMode, PlayerId} from '../../typings';
   styleUrls: ['./game-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameWrapperComponent implements OnInit, OnDestroy {
+export class GameWrapperComponent implements OnInit, OnDestroy, CanDeactivateResponder {
   @Select(GameState.playerId) playerId$: Observable<PlayerId>;
   @Select(GameState.gameId) gameId$: Observable<GameId>;
   @Select(GameState.gameExistence) gameExistence$: Observable<GameExistence>;
@@ -37,10 +39,30 @@ export class GameWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    this.store.dispatch(new LeaveGame());
   }
 
   endGame(): void {
     this.store.dispatch(new EndGame());
+  }
+
+  canDeactivate(): TypeOrObservable<boolean> {
+    return false;
+  }
+
+  canDeactivateContent(): TypeOrObservable<ConfirmDialogData> {
+    let message: string;
+
+    if (this.store.selectSnapshot(GameState.mode) === 'host') {
+      message = 'You are the host of this game. If you leave the game will be closed. Do you want to leave and close the game?';
+    } else {
+      message = 'You are a client of this game. You can re-join while the game has not yet started. Do you really want to leave?';
+    }
+
+    return {
+      message,
+      acceptButton: 'Leave',
+      declineButton: 'Stay',
+    };
   }
 }

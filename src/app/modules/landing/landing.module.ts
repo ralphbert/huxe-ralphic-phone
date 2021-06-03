@@ -6,13 +6,15 @@ import { JoinComponent } from './pages/join/join.component';
 import {FormsModule} from '@angular/forms';
 import { HostComponent } from './pages/host/host.component';
 import {LandingRoutingModule} from './landing-routing.module';
+import { JoinFormComponent } from './components/join-form/join-form.component';
 
 
 @NgModule({
   declarations: [
     LandingComponent,
     JoinComponent,
-    HostComponent
+    HostComponent,
+    JoinFormComponent
   ],
   exports: [
     LandingComponent,

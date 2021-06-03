@@ -1,6 +1,7 @@
 <div>playerId: {{ playerId$ | async }}</div>
 <div>gameId: {{ gameId$ | async }}</div>
 <div>mode$: {{ mode$ | async }}</div>
+<div>gameExistence$: {{ gameExistence$ | async }}</div>
 <hr>
 
 <ng-container *ngIf="gameExistence$ | async as gameExistence">
@@ -15,8 +16,9 @@
       Game exists!
 
       <button *appIfHost (click)="endGame()">End game</button>
+
+
+      <router-outlet></router-outlet>
     </ng-container>
   </ng-container>
 </ng-container>
-
-<router-outlet></router-outlet>
