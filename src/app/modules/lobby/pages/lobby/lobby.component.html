@@ -3,6 +3,10 @@
 
   <a routerLink="/">Leave</a>
 
+  <app-clipboard-wrapper *appIfHost [content]="gameId$ | async">
+    {{ gameId$ | async }}
+  </app-clipboard-wrapper>
+
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div>
       <div>

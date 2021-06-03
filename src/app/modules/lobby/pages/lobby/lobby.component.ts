@@ -19,6 +19,7 @@ export class LobbyComponent implements OnInit {
   @Select(GameState.player) player$: Observable<Player>;
   @Select(GameState.mode) mode$: Observable<GameMode>;
   @Select(GameState.allReady) allReady$: Observable<boolean>;
+  @Select(GameState.gameId) gameId$: Observable<string>;
   formGroup: FormGroup;
 
   constructor(private store: Store, private router: Router, private formBuilder: FormBuilder) {

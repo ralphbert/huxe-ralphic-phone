@@ -1,0 +1,6 @@
+<div class="flex border items-center overflow-hidden">
+  <div class="flex-grow flex-shrink px-4 py-2 min-w-0 text-ellipsis"><ng-content></ng-content></div>
+  <div>
+    <button class=" px-4 py-2" type="button" [cdkCopyToClipboard]="content" (cdkCopyToClipboardCopied)="onCopy()">Copy</button>
+  </div>
+</div>

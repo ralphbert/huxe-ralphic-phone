@@ -13,6 +13,7 @@ import {AppStoreModule} from './app-store.module';
 import {AuthModule} from './modules/auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
+import {UiModule} from './modules/ui/ui.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AppStoreModule,
+    UiModule,
     LandingModule,
     FormsModule,
     ReactiveFormsModule,
