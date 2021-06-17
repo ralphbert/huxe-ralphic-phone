@@ -6,6 +6,8 @@ import {FormsModule} from '@angular/forms';
 import {ClipboardWrapperComponent} from './components/clipboard-wrapper/clipboard-wrapper.component';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { CardComponent } from './components/card/card.component';
+import { CardBodyComponent } from './components/card-body/card-body.component';
 
 
 @NgModule({
@@ -18,12 +20,16 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
   declarations: [
     PageComponent,
     ImagePickerComponent,
-    ClipboardWrapperComponent
+    ClipboardWrapperComponent,
+    CardComponent,
+    CardBodyComponent
   ],
   exports: [
     PageComponent,
     ImagePickerComponent,
     ClipboardWrapperComponent,
+    CardComponent,
+    CardBodyComponent,
   ],
 })
 export class UiModule {

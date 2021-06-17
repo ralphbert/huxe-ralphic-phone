@@ -1,11 +1,20 @@
-<div>
-  <h2>Host Game</h2>
+<app-page>
+  <div class="space-y-4 md:space-y-0 md:flex md:space-x-4 justify-center">
+    <app-card class="md:w-80">
+      <app-card-body>
+        <h2>Host Game</h2>
 
-  <a routerLink="/host">Host</a>
-</div>
+        <a class="btn btn-block" routerLink="/host">Host</a>
+      </app-card-body>
+    </app-card>
 
-<div>
-  <h2>Join</h2>
+    <app-card class="md:w-80">
+      <app-card-body>
+        <h2>Join</h2>
 
-  <app-join-form></app-join-form>
-</div>
+        <app-join-form></app-join-form>
+      </app-card-body>
+    </app-card>
+  </div>
+
+</app-page>

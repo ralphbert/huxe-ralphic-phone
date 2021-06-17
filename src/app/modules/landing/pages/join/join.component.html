@@ -1,5 +1,7 @@
-<p *ngIf="loading">Joining game...</p>
-<div *ngIf="error">
-  <p>{{ error.message }}</p>
-  <p><a routerLink="/">Go home</a></p>
-</div>
+<app-page>
+  <p *ngIf="loading">Joining game...</p>
+  <div *ngIf="error">
+    <p>{{ error.message }}</p>
+    <p><a routerLink="/">Go home</a></p>
+  </div>
+</app-page>

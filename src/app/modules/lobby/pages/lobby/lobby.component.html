@@ -21,7 +21,7 @@
           <div *ngIf="formGroup.get('image').errors?.required">Required!</div>
         </div>
 
-        <button type="submit" [disabled]="formGroup.invalid">Save</button>
+        <button class="btn" type="submit" [disabled]="formGroup.invalid">Save</button>
       </div>
       <div>
         <div *ngFor="let player of players$ | async; trackBy: trackById">
@@ -31,7 +31,7 @@
     </div>
   </form>
 
-  <button *appIfHost [disabled]="!(allReady$ | async)" (click)="startGame()">Start game!</button>
+  <button class="btn" *appIfHost [disabled]="!(allReady$ | async)" (click)="startGame()">Start game!</button>
 
   <pre>{{ players$ | async | json }}</pre>
 </app-page>

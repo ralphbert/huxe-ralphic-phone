@@ -3,35 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat-core();
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
 $final-game-primary: mat-palette($mat-indigo);
 $final-game-accent: mat-palette($mat-pink, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
 $final-game-warn: mat-palette($mat-red);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
 $final-game-theme: mat-light-theme((
   color: (
     primary: $final-game-primary,
@@ -40,14 +20,73 @@ $final-game-theme: mat-light-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include angular-material-theme($final-game-theme);
 
-@import "./scss/buttons";
-@import "./scss/base";
-@import "./scss/forms";
+@layer base {
+  html, body {
+    @apply h-full;
+  }
+  body {
+    @apply m-0;
+  }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  a {
+    @apply text-primary;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+
+  .img-fluid {
+    @apply max-w-full h-auto;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply transition-all px-2 py-1 rounded text-center bg-primary text-white bg-gradient-to-b from-primary to-primary-300 shadow appearance-none inline-block
+    hover:from-primary-100 hover:to-primary-400;
+
+    &:active {
+      @apply from-primary to-primary-300 shadow-inner;
+    }
+
+    &:disabled {
+      @apply opacity-50;
+    }
+  }
+
+  .btn-block {
+    @apply block w-full;
+  }
+
+  .form-control {
+    @apply rounded border py-1 px-2 block appearance-none w-full;
+  }
+
+  .form-group {
+    @apply block mb-3;
+
+    label {
+      @apply block mb-2 text-gray-700
+    }
+  }
+
+}
+
+@layer utilities {
+  .text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

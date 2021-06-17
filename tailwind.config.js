@@ -10,7 +10,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#ff44ff'
+        primary: '#FF019A',
+        ...['#e6018b', '#cc017b', '#b3016c', '#99015c', '#80014d', '#66003e', '#4c002e', '#33001f', '#19000f'].reduce((all, cur, index) => {
+          all[`primary-${(index + 1) * 100}`] = cur;
+          return all;
+        }, {}),
+        secondary: '#00F1FF',
       }
     },
     minWidth: {

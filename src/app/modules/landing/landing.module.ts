@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import { HostComponent } from './pages/host/host.component';
 import {LandingRoutingModule} from './landing-routing.module';
 import { JoinFormComponent } from './components/join-form/join-form.component';
+import { UiModule } from '../ui/ui.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { JoinFormComponent } from './components/join-form/join-form.component';
     CommonModule,
     RouterModule,
     FormsModule,
+    UiModule,
   ]
 })
 export class LandingModule {
