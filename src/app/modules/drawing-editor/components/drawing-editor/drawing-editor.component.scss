@@ -1,0 +1,8 @@
+.drawing-editor-canvas {
+  padding-top: 66%;
+  @apply relative;
+
+  canvas {
+    @apply inset-0 absolute shadow w-full h-full;
+  }
+}

@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   @Select(GameState.stage) stage$: Observable<GameStage>;
   @Select(GameState.gameId) gameId$: Observable<GameStage>;
 
+  drawing = '';
+
   constructor(private router: Router) {
   }
 

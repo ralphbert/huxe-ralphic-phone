@@ -1,0 +1,19 @@
+<div class="drawing-editor">
+  <div class="drawing-editor-canvas">
+    <canvas
+      #canvas
+      (mousedown)="startDrawing($event)"
+      (touchstart)="startDrawing($event)"
+      (mouseup)="endDrawing($event)"
+      (touchend)="endDrawing($event)"
+      (touchcancel)="endDrawing($event)"
+      (mouseout)="endDrawing($event)"
+      (mousemove)="draw($event)"
+      (touchmove)="draw($event)"
+    ></canvas>
+  </div>
+  <div class="drawing-editor-tools flex w-full p-4 items-center space-x-4">
+    <app-color-picker (colorChange)="color = $event"></app-color-picker>
+    <button class="btn btn-secondary" (click)="clear()">Clear</button>
+  </div>
+</div>

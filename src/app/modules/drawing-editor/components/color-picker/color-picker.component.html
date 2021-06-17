@@ -1,0 +1,5 @@
+<div>
+  <label *ngFor="let listColor of colors" [ngStyle]="{ background: listColor }" [class.border-primary]="listColor === color" class="border-4 mr-2 border-transparent inline-block border shadow w-12 h-12 rounded-full">
+    <input class="invisible" [disabled]="disabled" (click)="changeColor(listColor)" type="radio" name="color">
+  </label>
+</div>

@@ -14,6 +14,7 @@ import {AuthModule} from './modules/auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import {UiModule} from './modules/ui/ui.module';
+import { DrawingEditorModule } from './modules/drawing-editor/drawing-editor.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {UiModule} from './modules/ui/ui.module';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    DrawingEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
